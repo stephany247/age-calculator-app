@@ -129,7 +129,6 @@ body {
 }
 
 
-
 .divider {
   position: relative;
   height: 1px;
@@ -244,6 +243,49 @@ body {
     line-height: 1.15;
   }
 }
+
+
+/* Compact layout for laptops with smaller screens */
+@media (min-width: 651px) and (max-width: 1366px) {
+  .page {
+    padding: 24px;
+  }
+
+  .calculator {
+    width: min(100%, 760px);
+    padding: 40px;
+    border-radius: 24px 24px 160px 24px;
+  }
+
+  .fields {
+    gap: 24px;
+  }
+
+  .field {
+    width: 140px;
+  }
+
+  .field input {
+    height: 64px;
+    padding: 10px 16px;
+    font-size: 26px;
+  }
+
+  .divider {
+    margin: 24px 0 36px;
+  }
+
+  .submit-button {
+    width: 80px;
+    height: 80px;
+  }
+
+  .results p {
+    font-size: clamp(3.5rem, 6vw, 5rem);
+    line-height: 1.05;
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   *,
