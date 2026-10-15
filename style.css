@@ -49,7 +49,7 @@ body {
 .calculator {
   width: min(100%, 840px);
   padding: 3.5rem;
-  background: #fff;
+  background: var(--white);
   border-radius: 24px 24px 200px 24px;
 }
 
@@ -65,7 +65,7 @@ body {
 
 .field label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-block-end: 0.5rem;
   color: var(--grey);
   font-size: 0.75rem;
   font-weight: 700;
@@ -82,7 +82,7 @@ body {
   border: 1px solid var(--light-grey);
   border-radius: 0.5rem;
   outline: none;
-  background: #fff;
+  background: var(--white);
   color: var(--black);
   font: inherit;
   font-size: 2rem;
@@ -159,7 +159,7 @@ body {
   border: 0;
   border-radius: 50%;
   background: var(--purple);
-  color: #fff;
+  color: var(--white);
   cursor: pointer;
   transition:
     background-color 180ms ease,
@@ -202,7 +202,7 @@ body {
   color: var(--black);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 40.625rem) {
   .page {
     place-items: start;
     margin: 4rem 0;
@@ -255,7 +255,7 @@ body {
 }
 
 /* Compact layout for laptops with smaller screens */
-@media (min-width: 651px) and (max-width: 1366px) {
+@media (min-width: 40.6875rem) and (max-width: 85.375rem) {
   .page {
     padding: 24px;
   }
@@ -296,12 +296,15 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
   }
 }
