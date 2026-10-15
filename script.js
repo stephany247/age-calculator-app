@@ -2,6 +2,7 @@ const form = document.querySelector("#age-form");
 const dayInput = document.querySelector("#day");
 const monthInput = document.querySelector("#month");
 const yearInput = document.querySelector("#year");
+const calculator = document.querySelector(".calculator");
 
 const inputs = {
   day: dayInput,
@@ -37,10 +38,6 @@ function setError(fieldName, message, showMessage = true) {
   errorElements[fieldName].textContent = message && showMessage ? message : "";
 
   inputs[fieldName].setAttribute("aria-invalid", message ? "true" : "false");
-}
-
-function clearErrors() {
-  Object.keys(inputs).forEach((name) => setError(name, ""));
 }
 
 function createDate(year, month, day) {
@@ -176,7 +173,6 @@ form.addEventListener("submit", (event) => {
   const year = Number(yearInput.value);
   const errors = validateDate(day, month, year);
   const hasAnyError = Object.values(errors).some(Boolean);
-  const calculator = document.querySelector(".calculator");
 
   calculator.classList.toggle("has-validation-error", hasAnyError);
 
