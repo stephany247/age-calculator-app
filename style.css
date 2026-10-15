@@ -122,6 +122,14 @@ body {
   box-shadow: 0 0 0 2px rgb(255 87 87 / 12%);
 }
 
+
+/* All borders turn red when any field is invalid */
+.calculator.has-validation-error .field input {
+  border-color: var(--error);
+}
+
+
+
 .divider {
   position: relative;
   height: 1px;

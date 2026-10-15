@@ -21,12 +21,19 @@ const resultElements = {
   days: document.querySelector("#days"),
 };
 
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
 
-function setError(fieldName, message) {
+function setError(fieldName, message, showMessage = true) {
   const field = inputs[fieldName].closest(".field");
+
+  // Apply red styling independently of the error message.
   field.classList.toggle("has-error", Boolean(message));
-  errorElements[fieldName].textContent = message;
+
+  // Show the message only when requested.
+  errorElements[fieldName].textContent = message && showMessage ? message : "";
+
   inputs[fieldName].setAttribute("aria-invalid", message ? "true" : "false");
 }
 
@@ -62,7 +69,14 @@ function validateDate(day, month, year) {
   }
 
   // Check the full calendar date only after day, month and year are in range.
-  if (!errors.day && !errors.month && !errors.year && raw.day && raw.month && raw.year) {
+  if (
+    !errors.day &&
+    !errors.month &&
+    !errors.year &&
+    raw.day &&
+    raw.month &&
+    raw.year
+  ) {
     const candidate = new Date(year, month - 1, day);
     const isRealDate =
       candidate.getFullYear() === year &&
@@ -89,7 +103,11 @@ function calculateAge(birthDate, today = new Date()) {
 
   if (days < 0) {
     // Borrow the number of days in the previous month.
-    const previousMonthLastDay = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    const previousMonthLastDay = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      0,
+    ).getDate();
     days += previousMonthLastDay;
     months -= 1;
   }
@@ -137,18 +155,30 @@ form.addEventListener("submit", (event) => {
   const month = Number(monthInput.value);
   const year = Number(yearInput.value);
   const errors = validateDate(day, month, year);
+  const hasAnyError = Object.values(errors).some(Boolean);
+  const calculator = document.querySelector(".calculator");
 
-  Object.entries(errors).forEach(([name, message]) => setError(name, message));
+  calculator.classList.toggle("has-validation-error", hasAnyError);
 
-  if (Object.values(errors).some(Boolean)) return;
+  Object.entries(errors).forEach(([name, message]) => {
+    setError(name, message, Boolean(message));
+  });
 
+  if (hasAnyError) return;
+
+  // Calculate and display age only for a valid date.
   const age = calculateAge(new Date(year, month - 1, day));
   showAge(age);
 });
 
-// Clear an individual field's error as the user edits it; full validation runs on submit.
+
 Object.entries(inputs).forEach(([name, input]) => {
   input.addEventListener("input", () => {
+    const calculator = document.querySelector(".calculator");
+
+    // Remove the all-borders-red state while the user edits.
+    calculator.classList.remove("has-validation-error");
+
     if (input.closest(".field").classList.contains("has-error")) {
       setError(name, "");
     }
