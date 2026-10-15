@@ -3,18 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <meta
       name="description"
-      content="Calculate your age in years, months, and days."
-    />
-    <title>Age Calculator App</title>
-    <link
-      rel="shortcut icon"
-      href="assets/images/favicon-32x32.png"
-      type="image/x-icon"
+      content="Calculate your exact age in years, months, and days with this free age calculator."
     />
 
-    <!-- Google fonts -->
+    <title>Age Calculator App</title>
+
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,9 +26,11 @@
   </head>
   <body>
     <main class="page">
+      <h1 class="visually-hidden">Age Calculator</h1>
+
       <section class="calculator" aria-label="Age calculator">
         <form id="age-form" novalidate>
-          <div class="fields">
+          <div class="fields" role="group" aria-label="Date of birth">
             <!-- Day field -->
             <div class="field" data-field="day">
               <label for="day">Day</label>
@@ -41,10 +42,14 @@
                 placeholder="DD"
                 min="1"
                 max="31"
+                step="1"
                 autocomplete="bday-day"
+                aria-describedby="day-error"
+                aria-invalid="false"
               />
               <p class="error-message" id="day-error" aria-live="polite"></p>
             </div>
+
             <!-- Month field -->
             <div class="field" data-field="month">
               <label for="month">Month</label>
@@ -56,10 +61,14 @@
                 placeholder="MM"
                 min="1"
                 max="12"
+                step="1"
                 autocomplete="bday-month"
+                aria-describedby="month-error"
+                aria-invalid="false"
               />
               <p class="error-message" id="month-error" aria-live="polite"></p>
             </div>
+
             <!-- Year field -->
             <div class="field" data-field="year">
               <label for="year">Year</label>
@@ -70,7 +79,10 @@
                 inputmode="numeric"
                 placeholder="YYYY"
                 min="1"
+                step="1"
                 autocomplete="bday-year"
+                aria-describedby="year-error"
+                aria-invalid="false"
               />
               <p class="error-message" id="year-error" aria-live="polite"></p>
             </div>
@@ -82,13 +94,17 @@
               type="submit"
               aria-label="Calculate age"
             >
-              <img src="/assets/images/icon-arrow.svg" alt="arrow-icon" />
+              <img
+                src="assets/images/icon-arrow.svg"
+                alt="arrow pointing down"
+                aria-hidden="true"
+              />
             </button>
           </div>
         </form>
 
         <!-- Results -->
-        <div class="results" aria-live="polite" aria-atomic="true">
+        <div class="results">
           <p>
             <span id="years" class="result-number">--</span>
             <span class="result-label">years</span>
@@ -102,6 +118,14 @@
             <span class="result-label">days</span>
           </p>
         </div>
+
+        <!-- Announce the completed result once, rather than every animation frame -->
+        <p
+          id="result-announcement"
+          class="visually-hidden"
+          aria-live="polite"
+          aria-atomic="true"
+        ></p>
       </section>
     </main>
   </body>

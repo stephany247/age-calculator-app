@@ -163,6 +163,9 @@ function showAge(age) {
   animateNumber(resultElements.years, age.years);
   animateNumber(resultElements.months, age.months);
   animateNumber(resultElements.days, age.days);
+
+  document.querySelector("#result-announcement").textContent =
+    `Your age is ${age.years} years, ${age.months} months, and ${age.days} days.`;
 }
 
 form.addEventListener("submit", (event) => {
