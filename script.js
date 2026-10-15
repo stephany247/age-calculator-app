@@ -41,6 +41,13 @@ function clearErrors() {
   Object.keys(inputs).forEach((name) => setError(name, ""));
 }
 
+function createDate(year, month, day) {
+  const date = new Date(0);
+  date.setFullYear(year, month - 1, day);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
 function validateDate(day, month, year) {
   const errors = { day: "", month: "", year: "" };
   const raw = {
@@ -77,7 +84,7 @@ function validateDate(day, month, year) {
     raw.month &&
     raw.year
   ) {
-    const candidate = new Date(year, month - 1, day);
+    const candidate = createDate(year, month, day);
     const isRealDate =
       candidate.getFullYear() === year &&
       candidate.getMonth() === month - 1 &&
@@ -167,10 +174,9 @@ form.addEventListener("submit", (event) => {
   if (hasAnyError) return;
 
   // Calculate and display age only for a valid date.
-  const age = calculateAge(new Date(year, month - 1, day));
+  const age = calculateAge(createDate(year, month, day));
   showAge(age);
 });
-
 
 Object.entries(inputs).forEach(([name, input]) => {
   input.addEventListener("input", () => {
