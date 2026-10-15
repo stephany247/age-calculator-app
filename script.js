@@ -25,6 +25,8 @@ const reducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 ).matches;
 
+const animationFrames = new Map();
+
 function setError(fieldName, message, showMessage = true) {
   const field = inputs[fieldName].closest(".field");
 
@@ -128,6 +130,12 @@ function calculateAge(birthDate, today = new Date()) {
 }
 
 function animateNumber(element, target) {
+  const previousFrame = animationFrames.get(element);
+
+  if (previousFrame !== undefined) {
+    cancelAnimationFrame(previousFrame);
+  }
+
   if (reducedMotion) {
     element.textContent = String(target);
     return;
@@ -138,15 +146,20 @@ function animateNumber(element, target) {
 
   function frame(now) {
     const progress = Math.min((now - startTime) / duration, 1);
-    // Ease out so the number slows as it approaches its final value.
     const eased = 1 - Math.pow(1 - progress, 3);
     element.textContent = String(Math.floor(target * eased));
 
-    if (progress < 1) requestAnimationFrame(frame);
-    else element.textContent = String(target);
+    if (progress < 1) {
+      const frameId = requestAnimationFrame(frame);
+      animationFrames.set(element, frameId);
+    } else {
+      element.textContent = String(target);
+      animationFrames.delete(element);
+    }
   }
 
-  requestAnimationFrame(frame);
+  const frameId = requestAnimationFrame(frame);
+  animationFrames.set(element, frameId);
 }
 
 function showAge(age) {
